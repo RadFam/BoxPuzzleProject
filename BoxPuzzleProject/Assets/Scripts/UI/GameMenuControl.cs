@@ -2,15 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMenuControl : MonoBehaviour {
+namespace UIControls
+{
+    public class GameMenuControl : MonoBehaviour
+    {
+		[SerializeField]
+		GameObject settingsMenu;
+        // Use this for initialization
+        void Start()
+        {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        }
+
+        public void OnProceedClick()
+		{
+			this.gameObject.SetActive(false);
+		}
+
+		public void OnLoadGameClick()
+		{
+			this.gameObject.SetActive(false);
+		}
+
+		public void OnSaveGameClick()
+		{
+			this.gameObject.SetActive(false);
+		}
+
+		public void OnMainMenuClick()
+		{
+			this.gameObject.SetActive(false);
+		}
+
+		public void OnSettingsClick()
+		{
+			settingsMenu.SetActive(true);
+		}
+    }
 }
