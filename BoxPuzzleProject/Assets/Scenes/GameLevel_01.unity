@@ -2811,6 +2811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lvlScore: 0
+  lvlMaxScore: 0
 --- !u!4 &2081886401
 Transform:
   m_ObjectHideFlags: 0

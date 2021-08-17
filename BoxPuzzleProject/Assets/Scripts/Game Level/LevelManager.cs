@@ -14,11 +14,11 @@ namespace PlayControls
 		public Action OnLevelComplete;
 		#endregion
 
-		FieldManager fieldManager;
 		LoadManager loadManager;
 		SaveManager saveManager;
 
 		public int lvlScore;
+		public int lvlMaxScore;
         // Use this for initialization
 
 		void Awake()
@@ -34,9 +34,11 @@ namespace PlayControls
 		}
         void Start()
         {
-			fieldManager = GetComponent<FieldManager>();
 			loadManager = GetComponent<LoadManager>();
 			saveManager = GetComponent<SaveManager>();
+
+			lvlMaxScore = 0;
+			lvlScore = 0;
         }
 
         public void OnLoad()
@@ -52,6 +54,11 @@ namespace PlayControls
 		public void OnStepBack()
 		{
 
+		}
+
+		public void ChangeLevelScore(int change)
+		{
+			
 		}
     }
 }
