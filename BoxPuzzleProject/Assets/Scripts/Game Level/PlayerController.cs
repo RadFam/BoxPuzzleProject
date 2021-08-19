@@ -44,10 +44,10 @@ namespace PlayControls
 		public void SetUIMoves(UIMoveController uiMC)
 		{
 			uiMoveController = uiMC;
-			uiMoveController.LeftButton.onClick.AddListener();
-			uiMoveController.DownButton.onClick.AddListener();
-			uiMoveController.UpButton.onClick.AddListener();
-			uiMoveController.RightButton.onClick.AddListener();
+			uiMoveController.LeftButton.onClick.AddListener(MoveLeft);
+			uiMoveController.DownButton.onClick.AddListener(MoveDown);
+			uiMoveController.UpButton.onClick.AddListener(MoveUp);
+			uiMoveController.RightButton.onClick.AddListener(MoveRight);
 		}
 		void CheckInputs()
 		{
@@ -55,29 +55,49 @@ namespace PlayControls
 			{
 				if (Input.GetKeyUp(KeyCode.W))
 				{
-					currentDir = PlayerDirects.Up;
-					// Here must be rotation of person (!)
-
-					CheckForWalking();
+					MoveUp();
 				}
 				if (Input.GetKeyUp(KeyCode.A))
 				{
-					currentDir = PlayerDirects.Left;
-					// Here must be rotation of person (!)
-
-					CheckForWalking();
+					MoveLeft();
 				}
 				if (Input.GetKeyUp(KeyCode.S))
 				{
-					currentDir = PlayerDirects.Down;
-					CheckForWalking();
+					MoveDown();
 				}
 				if (Input.GetKeyUp(KeyCode.D))
 				{
-					currentDir = PlayerDirects.Right;
-					CheckForWalking();
+					MoveRight();
 				}
 			}
+		}
+
+		void MoveUp()
+		{
+			currentDir = PlayerDirects.Up;
+			// Here must be rotation of person (!)
+
+			CheckForWalking();
+		}
+
+		void MoveDown()
+		{
+			currentDir = PlayerDirects.Down;
+			CheckForWalking();
+		}
+
+		void MoveLeft()
+		{
+			currentDir = PlayerDirects.Left;
+			// Here must be rotation of person (!)
+
+			CheckForWalking();
+		}
+
+		void MoveRight()
+		{
+			currentDir = PlayerDirects.Right;
+			CheckForWalking();
 		}
 
 		void CheckForWalking()
@@ -86,8 +106,9 @@ namespace PlayControls
 			RotateCheck();
 			if(BoxMoverManager.inst.CanPlayerMoveFurther(moveVector, transform.position))
 			{
-				playerAnim.SetTrigger("startWalk"); // Here we need to know if we simply walking, or pushing box ahead (!)
-				nextPosF = transform.position + new Vector3(moveVector.x, moveVector.y, 0) * BoxMoverManager.inst.walkDistance;
+				playerAnim.SetBool("isWalk", false);
+				playerAnim.SetBool("isIdle", true); // Here we need to know if we simply walking, or pushing box ahead (!)
+				nextPosF = transform.position + new Vector3(moveVector.x, 0, moveVector.y) * BoxMoverManager.inst.walkDistance;
 				walkingState = true;
 			}
 		}
@@ -103,7 +124,8 @@ namespace PlayControls
                 {
 					transform.position = nextPosF;
 					walkingState = false;
-					playerAnim.SetTrigger("startIdle");
+					playerAnim.SetBool("isWalk", false);
+					playerAnim.SetBool("isIdle", true);
                 }
             }
 		}

@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldManager : MonoBehaviour {
+namespace PlayControls
+{
+    public abstract class FieldManager : MonoBehaviour
+    {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        public abstract Vector3 GetAdaptedCoordinates(Vector3 initCoords);
+		public abstract bool IsPassible(Vector3 coords);
+		public abstract bool IsTarget(Vector3 coords);
+    }
 }

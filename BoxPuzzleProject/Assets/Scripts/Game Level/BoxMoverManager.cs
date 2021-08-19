@@ -34,7 +34,7 @@ namespace PlayControls
 				Destroy(this.gameObject);
 			}
 
-			moveSpeed = 4.0f;
+			moveSpeed = 1.0f;
 			walkDistance = 1;
 
 			boxesPool = new Dictionary<GameObject, BoxController>();
@@ -74,16 +74,24 @@ namespace PlayControls
 
 		public bool CanPlayerMoveFurther(Vector2Int dir, Vector3 coords)
 		{
-			Vector3 nextCoords = coords + new Vector3Int(dir.x, dir.y, 0) * walkDistance;
+			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
 
-			var box = boxesPool.Where(x => x.Key.transform.position == nextCoords).Select(x => x.Key);
+			GameObject box = null;
+			foreach (var item in boxesPool)
+			{
+				if (item.Key.transform.position == nextCoords)
+				{
+					box = item.Key;
+					break;
+				}
+			}
 			if (box != null)
 			{
-				bool check = CanBoxMoveFurther(dir, box.First().transform.position);
+				bool check = CanBoxMoveFurther(dir, box.transform.position);
 				if (check)
 				{
-					boxesPool[box.First()].moveVector = dir;
-					boxesPool[box.First()].StartMove();
+					boxesPool[box].moveVector = dir;
+					boxesPool[box].StartMove();
 				}
 				return check;
 			}
@@ -93,12 +101,15 @@ namespace PlayControls
 
 		public bool CanBoxMoveFurther(Vector2Int dir, Vector3 coords)
 		{
-			Vector3 nextCoords = coords + new Vector3Int(dir.x, dir.y, 0) * walkDistance;
+			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
 
-			var box = boxesPool.Where(x => x.Key.transform.position == nextCoords).Select(x => x.Key);
-			if (box != null)
+			GameObject box = null;
+			foreach (var item in boxesPool)
 			{
-				return false;
+				if (item.Key.transform.position == nextCoords)
+				{
+					return false;
+				}
 			}
 
 			return fieldManager.IsPassible(nextCoords);

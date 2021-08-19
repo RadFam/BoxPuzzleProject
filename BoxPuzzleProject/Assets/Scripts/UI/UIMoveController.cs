@@ -24,7 +24,7 @@ namespace UIControls
         // Use this for initialization
         void Start()
         {
-			PlayerController pc = GameObject.Find("PlayerController").GetComponent<PlayerController>();
+			PlayerController pc = GameObject.Find("Player").GetComponent<PlayerController>();
 			pc.SetUIMoves(this);
         }
     }
