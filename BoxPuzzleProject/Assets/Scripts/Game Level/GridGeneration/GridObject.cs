@@ -24,12 +24,12 @@ namespace GeneratorControls
 		{
 			if (objectType == ObjectType.Wall)
 			{
-
+				Instantiate(wallPrefab, new Vector3(0,0,0), Quaternion.identity, gameObject.transform);
 			}
 
 			if (objectType == ObjectType.Box)
 			{
-				
+				Instantiate(boxPrefab, new Vector3(0,0,0), Quaternion.identity, gameObject.transform);
 			}
 		}
 	}

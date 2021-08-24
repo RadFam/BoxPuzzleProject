@@ -10,11 +10,12 @@ namespace GeneratorControls
 		public int widthSize;
 		public int heightSize;
 
+		[SerializeField]
 		GridObject go;
 		// Use this for initialization
 		void Start () 
 		{
-			go = new GameObject();
+			go = new GridObject();
 		}
 			
 		public void GenerateBaseGrid() // Just for brief - width and height are even numbers

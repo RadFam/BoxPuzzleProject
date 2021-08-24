@@ -1,16 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEditor;
+using GeneratorControls;
 
-public class GridObjectEditor : MonoBehaviour {
+[CustomEditor(typeof(GridObject))]
+public class GridObjectEditor : Editor {
 
-	// Use this for initialization
-	void Start () {
-		
+	GridObject gridObject;
+	void Awake () 
+	{
+		gridObject = (GridObject)target;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	public override void OnInspectorGUI() 
+	{
+		if (GUILayout.Button("Generate object"))
+		{
+			gridObject.MakeChoose();
+		}
+
+		base.OnInspectorGUI();	
 	}
 }
