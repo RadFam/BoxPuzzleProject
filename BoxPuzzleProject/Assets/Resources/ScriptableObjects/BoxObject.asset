@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556563fb9927da848a79454c25b82483, type: 3}
+  m_Name: BoxObject
+  m_EditorClassIdentifier: 
+  boxMeshes:
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  boxTex:
+  - {fileID: 2100000, guid: 3783cb3da4b02a147882676a834a7746, type: 2}

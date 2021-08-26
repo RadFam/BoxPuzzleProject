@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName="TargetObject", menuName="ScriptableObjects/GameResourses", order = 4)]
+[CreateAssetMenu(fileName="TargetObject", menuName="ScriptableObjects/FieldObjects/Target", order = 3)]
 public class TargetObjects : ScriptableObject {
 
 	public List<Mesh> targetMeshes = new List<Mesh>();

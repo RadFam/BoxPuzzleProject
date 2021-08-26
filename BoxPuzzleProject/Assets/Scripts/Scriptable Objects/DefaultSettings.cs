@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName="DefaultSettings", menuName="ScriptableObjects/GameResourses", order = 1)]
+[CreateAssetMenu(fileName="DefaultSettings", menuName="ScriptableObjects/GameResourses/Settings", order = 1)]
 public class DefaultSettings : ScriptableObject {
 
 	public int defaultScore;

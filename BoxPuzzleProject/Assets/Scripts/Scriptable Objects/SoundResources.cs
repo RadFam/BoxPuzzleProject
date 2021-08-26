@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName="SoundResources", menuName="ScriptableObjects/GameResourses", order=2)]
+[CreateAssetMenu(fileName="SoundResources", menuName="ScriptableObjects/GameResourses/Sounds", order = 2)]
 public class SoundResources : ScriptableObject 
 {
 	

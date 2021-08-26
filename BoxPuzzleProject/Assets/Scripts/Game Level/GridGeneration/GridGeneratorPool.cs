@@ -15,7 +15,7 @@ namespace GeneratorControls
 		// Use this for initialization
 		void Start () 
 		{
-			go = new GridObject();
+			//Debug.Log("go object: " + go);
 		}
 			
 		public void GenerateBaseGrid() // Just for brief - width and height are even numbers
@@ -23,6 +23,9 @@ namespace GeneratorControls
 			foreach (Transform child in this.transform) {
      			GameObject.Destroy(child.gameObject);
  			}
+
+			go = Resources.Load<GridObject>("Prefabs/GridObject");
+			Debug.Log("go object: " + go);
 
 			for (int i = 0; i < widthSize; ++i)
 			{

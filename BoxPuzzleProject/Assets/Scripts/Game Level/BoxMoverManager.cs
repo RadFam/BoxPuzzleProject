@@ -15,6 +15,7 @@ namespace PlayControls
 		public Dictionary<GameObject, BoxController> boxesPool;
 		public Dictionary<GameObject, TargetController> targetsPool;
 
+		[SerializeField]
 		FieldManager fieldManager;
 		Stack<SaveData> savedSteps;
 
@@ -44,7 +45,7 @@ namespace PlayControls
 
 		void Start()
 		{
-			fieldManager = GetComponent<FieldManager>();
+			//fieldManager = GetComponent<FieldManager>();
 
 			// Probably we don`t need this steps
 			boxesPool.Clear();
