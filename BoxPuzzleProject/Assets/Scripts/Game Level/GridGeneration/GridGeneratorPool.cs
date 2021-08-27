@@ -36,5 +36,17 @@ namespace GeneratorControls
 				}
 			}
 		}
+
+		public Dictionary<GameObject,GridObject> GetAllGridObjects()
+		{
+			Dictionary<GameObject,GridObject> allObjects = new Dictionary<GameObject,GridObject>();
+
+			foreach (GridObject child in transform.GetComponentsInChildren<GridObject>()) 
+			{
+				allObjects.Add(child.gameObject, child);
+    		}
+
+			return allObjects;
+		}
 	}
 }
