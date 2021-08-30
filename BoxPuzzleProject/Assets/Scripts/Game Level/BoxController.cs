@@ -9,8 +9,6 @@ namespace PlayControls
 
         public Vector2Int nextPos{get; set;}
         public Vector2Int moveVector{get; set;}
-
-		[SerializeField]
 		float deltaMoveDist;
         Vector3 nextPosF;
         bool walkingState = false;
@@ -21,6 +19,7 @@ namespace PlayControls
         {
 			BoxMoverManager.inst.AddBoxToPool(gameObject, this);
 			boxSpeed = BoxMoverManager.inst.moveSpeed;
+            deltaMoveDist = 0.01f;
         }
 
         // Update is called once per frame

@@ -26,12 +26,14 @@ namespace PlayControls
         {
 			playerAnim = GetComponent<Animator>();
 			dirVectors = new List<Vector2Int>{new Vector2Int(0, -1), new Vector2Int(-1, 0), new Vector2Int(1, 0), new Vector2Int(0, 1)};
-			locRots = new List<Vector3>{new Vector3(0,0,0), new Vector3(0,90,0), new Vector3(0,-90,0), new Vector3(0,180,0)};
-			currentDir = PlayerDirects.Down;
+			locRots = new List<Vector3>{new Vector3(0,-90,0), new Vector3(0,180,0), new Vector3(0,0,0), new Vector3(0,90,0)};
+			currentDir = PlayerDirects.Right;
 			prevDir = currentDir;
 			
 			playerSpeed = BoxMoverManager.inst.moveSpeed;
 			BoxMoverManager.inst.CorrectPosition(gameObject);
+
+			playerAnim.SetBool("isIdle", true);
         }
 
         // Update is called once per frame
@@ -75,8 +77,6 @@ namespace PlayControls
 		void MoveUp()
 		{
 			currentDir = PlayerDirects.Up;
-			// Here must be rotation of person (!)
-
 			CheckForWalking();
 		}
 
@@ -89,8 +89,6 @@ namespace PlayControls
 		void MoveLeft()
 		{
 			currentDir = PlayerDirects.Left;
-			// Here must be rotation of person (!)
-
 			CheckForWalking();
 		}
 
@@ -106,8 +104,8 @@ namespace PlayControls
 			RotateCheck();
 			if(BoxMoverManager.inst.CanPlayerMoveFurther(moveVector, transform.position))
 			{
-				playerAnim.SetBool("isWalk", false);
-				playerAnim.SetBool("isIdle", true); // Here we need to know if we simply walking, or pushing box ahead (!)
+				playerAnim.SetBool("isIdle", false);
+				playerAnim.SetBool("isWalk", true); // Here we need to know if we simply walking, or pushing box ahead (!)
 				nextPosF = transform.position + new Vector3(moveVector.x, 0, moveVector.y) * BoxMoverManager.inst.walkDistance;
 				walkingState = true;
 			}

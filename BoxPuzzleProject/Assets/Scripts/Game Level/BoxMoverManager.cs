@@ -35,7 +35,7 @@ namespace PlayControls
 				Destroy(this.gameObject);
 			}
 
-			moveSpeed = 1.0f;
+			moveSpeed = 0.5f;
 			walkDistance = 1;
 
 			boxesPool = new Dictionary<GameObject, BoxController>();
@@ -55,7 +55,7 @@ namespace PlayControls
 
 		public void CorrectPosition(GameObject go)
 		{
-			// Correct position with filedManager
+			go.transform.position = fieldManager.GetAdaptedCoordinates(go.transform.position);
 
 		}
 
@@ -104,7 +104,6 @@ namespace PlayControls
 		{
 			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
 
-			GameObject box = null;
 			foreach (var item in boxesPool)
 			{
 				if (item.Key.transform.position == nextCoords)

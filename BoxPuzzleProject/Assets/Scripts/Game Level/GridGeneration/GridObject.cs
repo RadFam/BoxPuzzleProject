@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayControls;
 
 namespace GeneratorControls
 {
 	public class GridObject : MonoBehaviour 
 	{
-		public enum ObjectType{Field, Wall, Target, Box};
+		public enum ObjectType{None, Field, Wall, Target, Box};
 		public ObjectType objectType;
 		public int objectSubType;
 
@@ -29,6 +30,18 @@ namespace GeneratorControls
 		
 		public void MakeChoose()
 		{
+			if (objectType == ObjectType.None)
+			{
+				meshFilter.mesh = null;
+				meshRenderer.material = null;
+
+				BoxController bc = gameObject.GetComponent<BoxController>();
+				if (bc != null)
+				{
+					DestroyImmediate(bc as Object, true);
+				}
+			}
+			
 			if (objectType == ObjectType.Wall)
 			{
 				wallObjects = Resources.Load<WallObjects>("ScriptableObjects/WallObject");
@@ -41,6 +54,7 @@ namespace GeneratorControls
 				boxObjects = Resources.Load<BoxObjects>("ScriptableObjects/BoxObject");
 				meshFilter.mesh = boxObjects.boxMeshes[objectSubType];
 				meshRenderer.material = boxObjects.boxTex[objectSubType];
+				gameObject.AddComponent(typeof(BoxController));
 			}
 
 			if (objectType == ObjectType.Target)
