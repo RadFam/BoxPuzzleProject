@@ -19,6 +19,8 @@ namespace PlayControls
 			dataFromGrid = gridGeneratorPool.GetAllGridObjects();
 			deltaXField = gridGeneratorPool.widthSize;
 			deltaZField = gridGeneratorPool.heightSize;
+
+			Debug.Log("dataFromGrid: " + dataFromGrid);
         }
 
 		public GameObject GetObjectByCoord(Vector3 coords)
@@ -32,7 +34,6 @@ namespace PlayControls
 					go = pr.Key;
 				}
 			}
-
 			return go;
 		}
 
@@ -57,11 +58,14 @@ namespace PlayControls
 
 		public override bool IsPassible(Vector3 coords)
 		{
+			//Debug.Log("Is passible coords: " + coords);
 			Vector3 realPos = GetAdaptedCoordinates(coords);
+			//Debug.Log("Real coords: " + realPos);
 
 			if ((realPos.x >= -1*deltaXField/2 && realPos.x <= deltaXField/2) && (realPos.z >= -1*deltaZField/2 && realPos.z <= deltaZField/2))
 			{
 				GameObject go = GetObjectByCoord(realPos);
+				//Debug.Log("go: " + go + " " + go.transform.position);
 				if (dataFromGrid[go].objectType == GridObject.ObjectType.Wall)
 				{
 					return false;

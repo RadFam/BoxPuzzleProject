@@ -21,6 +21,8 @@ namespace PlayControls
 		PlayerDirects prevDir;
 		enum PlayerDirects {Down, Left, Right, Up};
 		UIMoveController uiMoveController;
+
+		int pushWalk;
         // Use this for initialization
         void Start()
         {
@@ -29,6 +31,7 @@ namespace PlayControls
 			locRots = new List<Vector3>{new Vector3(0,-90,0), new Vector3(0,180,0), new Vector3(0,0,0), new Vector3(0,90,0)};
 			currentDir = PlayerDirects.Right;
 			prevDir = currentDir;
+			pushWalk = 0;
 			
 			playerSpeed = BoxMoverManager.inst.moveSpeed;
 			BoxMoverManager.inst.CorrectPosition(gameObject);
@@ -102,10 +105,18 @@ namespace PlayControls
 		{
 			moveVector = dirVectors[(int)currentDir];
 			RotateCheck();
-			if(BoxMoverManager.inst.CanPlayerMoveFurther(moveVector, transform.position))
+			
+			if(BoxMoverManager.inst.CanPlayerMoveFurther(moveVector, transform.position, out pushWalk))
 			{
 				playerAnim.SetBool("isIdle", false);
-				playerAnim.SetBool("isWalk", true); // Here we need to know if we simply walking, or pushing box ahead (!)
+				if (pushWalk == 0)
+				{
+					playerAnim.SetBool("isWalk", true);
+				}
+				else
+				{
+					playerAnim.SetBool("isPush", true);
+				}
 				nextPosF = transform.position + new Vector3(moveVector.x, 0, moveVector.y) * BoxMoverManager.inst.walkDistance;
 				walkingState = true;
 			}
@@ -120,15 +131,23 @@ namespace PlayControls
 
                 if (Vector3.Distance(transform.position, nextPosF) < deltaMoveDist)
                 {
-					transform.position = nextPosF;
-					walkingState = false;
-					playerAnim.SetBool("isWalk", false);
-					playerAnim.SetBool("isIdle", true);
+                    transform.position = nextPosF;
+                    walkingState = false;
+                    if (pushWalk == 0)
+                    {
+                        playerAnim.SetBool("isWalk", false);
+                    }
+                    else
+                    {
+                        playerAnim.SetBool("isPush", false);
+                    }
+                    pushWalk = 0;
+                    playerAnim.SetBool("isIdle", true);
                 }
             }
-		}
+        }
 
-		void RotateCheck()
+        void RotateCheck()
 		{
 			if (prevDir != currentDir)
 			{

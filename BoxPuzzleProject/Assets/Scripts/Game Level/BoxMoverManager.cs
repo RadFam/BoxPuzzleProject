@@ -48,9 +48,12 @@ namespace PlayControls
 			//fieldManager = GetComponent<FieldManager>();
 
 			// Probably we don`t need this steps
+			
+			/*
 			boxesPool.Clear();
 			targetsPool.Clear();
 			savedSteps.Clear();
+			*/
 		}
 
 		public void CorrectPosition(GameObject go)
@@ -61,26 +64,29 @@ namespace PlayControls
 
 		public void AddBoxToPool(GameObject go, BoxController bc)
 		{
-			CorrectPosition(go);
+			Debug.Log("Box was added: " + go.transform.position);
 			boxesPool.Add(go, bc);
+			Debug.Log("Box was added + : " + boxesPool.Count);
 		}
 
 		public void AddTargetToPool(GameObject go, TargetController tc)
 		{
-			CorrectPosition(go);
+			//CorrectPosition(go);
 			targetsPool.Add(go, tc);
 
 			LevelManager.inst.lvlMaxScore += 1;
 		}
 
-		public bool CanPlayerMoveFurther(Vector2Int dir, Vector3 coords)
+		public bool CanPlayerMoveFurther(Vector2Int dir, Vector3 coords, out int push)
 		{
 			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
+			Debug.Log("Next coords: " + nextCoords + "  dictCount: " + boxesPool.Count);
 
 			GameObject box = null;
-			foreach (var item in boxesPool)
+			foreach (KeyValuePair<GameObject, BoxController> item in boxesPool)
 			{
-				if (item.Key.transform.position == nextCoords)
+				Debug.Log("box item: " + item);
+				if (item.Key.transform.position.x == nextCoords.x && item.Key.transform.position.z == nextCoords.z)
 				{
 					box = item.Key;
 					break;
@@ -94,9 +100,11 @@ namespace PlayControls
 					boxesPool[box].moveVector = dir;
 					boxesPool[box].StartMove();
 				}
+				push = 1;
 				return check;
 			}
 
+			push = 0;
 			return fieldManager.IsPassible(nextCoords); 
 		}
 
@@ -104,9 +112,9 @@ namespace PlayControls
 		{
 			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
 
-			foreach (var item in boxesPool)
+			foreach (KeyValuePair<GameObject, BoxController> item in boxesPool)
 			{
-				if (item.Key.transform.position == nextCoords)
+				if (item.Key.transform.position.x == nextCoords.x && item.Key.transform.position.z == nextCoords.z)
 				{
 					return false;
 				}
