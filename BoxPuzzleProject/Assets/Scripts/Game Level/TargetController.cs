@@ -2,15 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetController : MonoBehaviour {
+namespace PlayControls
+{
+    public class TargetController : MonoBehaviour
+    {
+		public bool reachStatus;
+		MeshRenderer meshRenderer;
+        TargetStarController targetStarController;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        // Use this for initialization
+        void Start()
+        {
+			reachStatus = false;
+        }
+
+        public void OnReachTarget()
+        {
+            targetStarController.ReachTarget();
+        }
+
+        public void OnDeReachTarget()
+        {
+            targetStarController.gameObject.SetActive(true);
+        }
+    }
 }
