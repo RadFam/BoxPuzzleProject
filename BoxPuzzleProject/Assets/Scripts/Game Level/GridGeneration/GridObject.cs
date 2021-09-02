@@ -16,9 +16,9 @@ namespace GeneratorControls
 		[SerializeField]
 		MeshRenderer meshRenderer;
 
-		WallObjects wallObjects;
-		BoxObjects boxObjects;
-		TargetObjects targetObjects;
+		public WallObjects wallObjects{get; private set;}
+		public BoxObjects boxObjects{get; private set;}
+		public TargetObjects targetObjects;//{get; private set;}
 
 
 		// Use this for initialization
@@ -39,6 +39,21 @@ namespace GeneratorControls
 				if (bc != null)
 				{
 					DestroyImmediate(bc as Object, true);
+				}
+
+				TargetController tc = gameObject.GetComponent<TargetController>();
+				if (tc != null)
+				{
+					Vector3 coords = new Vector3(transform.position.x, 0.5f, transform.position.z);
+					transform.position = coords;
+
+
+					GameObject star = this.gameObject.transform.GetChild(0).gameObject;
+					if (star != null)
+					{
+						DestroyImmediate(star as Object, true);
+					}
+					DestroyImmediate(tc as Object, true);
 				}
 			}
 			
@@ -62,6 +77,13 @@ namespace GeneratorControls
 				targetObjects = Resources.Load<TargetObjects>("ScriptableObjects/TargetObject");
 				meshFilter.mesh = targetObjects.targetMeshes[objectSubType];
 				meshRenderer.material = targetObjects.targetTex[objectSubType];
+				gameObject.AddComponent(typeof(TargetController));
+				gameObject.GetComponent<TargetController>().selfGrid = this;
+				Vector3 coords = new Vector3(transform.position.x, 0.25f, transform.position.z);
+				transform.position = coords;
+
+				// Add star prefab to gameObject as a child component
+				GameObject targetStar = Instantiate(Resources.Load("Prefabs/Star"), transform, false) as GameObject;
 			}
 		}
 	}

@@ -15,13 +15,14 @@ namespace PlayControls
         void Start()
         {
 			reachStatus = false;
-			transform.position = initPos;
+			transform.localPosition = initPos;
+			myAnim.enabled = true;
         }
 
 		void OnEnable()
 		{
 			reachStatus = false;
-			transform.position = initPos;
+			transform.localPosition = initPos;
 			myAnim.enabled = true;
 			myAnim.SetTrigger("isRotating");
 		}
@@ -33,7 +34,7 @@ namespace PlayControls
 		}
 
 		public void OnFadeOut()
-		{
+		{	transform.localPosition = initPos;
 			myAnim.enabled = false;
 			gameObject.SetActive(false);
 

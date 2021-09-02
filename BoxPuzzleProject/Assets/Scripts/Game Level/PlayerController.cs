@@ -33,6 +33,8 @@ namespace PlayControls
 			prevDir = currentDir;
 			pushWalk = 0;
 			
+			BoxMoverManager.inst.currPlayer = this;
+
 			playerSpeed = BoxMoverManager.inst.moveSpeed;
 			BoxMoverManager.inst.CorrectPosition(gameObject);
 

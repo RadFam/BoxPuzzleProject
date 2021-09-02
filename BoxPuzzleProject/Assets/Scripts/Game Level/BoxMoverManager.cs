@@ -19,9 +19,10 @@ namespace PlayControls
 		FieldManager fieldManager;
 		Stack<SaveData> savedSteps;
 
-		PlayerController currPlayer;
+		public PlayerController currPlayer;
 		GameObject currBox;
 		GameObject currTarget;
+		GameObject lastTarget;
 		int currScore;
         
         void Awake()
@@ -41,6 +42,10 @@ namespace PlayControls
 			boxesPool = new Dictionary<GameObject, BoxController>();
 			targetsPool = new Dictionary<GameObject, TargetController>();
 			savedSteps = new Stack<SaveData>();
+
+			currBox = null;
+			currTarget = null;
+			lastTarget = null;
 		}
 
 		void Start()
@@ -64,9 +69,7 @@ namespace PlayControls
 
 		public void AddBoxToPool(GameObject go, BoxController bc)
 		{
-			Debug.Log("Box was added: " + go.transform.position);
 			boxesPool.Add(go, bc);
-			Debug.Log("Box was added + : " + boxesPool.Count);
 		}
 
 		public void AddTargetToPool(GameObject go, TargetController tc)
@@ -80,18 +83,24 @@ namespace PlayControls
 		public bool CanPlayerMoveFurther(Vector2Int dir, Vector3 coords, out int push)
 		{
 			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
-			Debug.Log("Next coords: " + nextCoords + "  dictCount: " + boxesPool.Count);
+			//Debug.Log("Next coords: " + nextCoords + "  dictCount: " + boxesPool.Count);
 
 			GameObject box = null;
 			foreach (KeyValuePair<GameObject, BoxController> item in boxesPool)
 			{
-				Debug.Log("box item: " + item);
+				//Debug.Log("box item: " + item);
 				if (item.Key.transform.position.x == nextCoords.x && item.Key.transform.position.z == nextCoords.z)
 				{
 					box = item.Key;
 					break;
 				}
 			}
+			currBox = box;
+			if (currBox != null)
+			{
+				Debug.Log("currBox.transform.position: " + currBox.transform.position);
+			}
+			MakeSaveStep(); // (!!!!) HERE WE SAVE STEP DATA (!!!!)
 			if (box != null)
 			{
 				bool check = CanBoxMoveFurther(dir, box.transform.position);
@@ -123,23 +132,69 @@ namespace PlayControls
 			return fieldManager.IsPassible(nextCoords);
 		}
 
+		public bool ReachDestination(Vector3 coords)
+		{
+			bool res =  fieldManager.IsTarget(coords);
+
+			lastTarget = currTarget;
+            if (res)
+            {
+                foreach (KeyValuePair<GameObject, TargetController> item in targetsPool)
+                {
+                    if (item.Key.transform.position.x == coords.x && item.Key.transform.position.z == coords.z)
+                    {
+                        currTarget = item.Key;
+                        break;
+                    }
+                }
+            }
+			else
+			{
+				currTarget = null;
+			}
+
+			return res;
+		}
 		public void GetTarget()
 		{
+			targetsPool[currTarget].OnReachTarget(); // need lastTarget(!)
 			LevelManager.inst.ChangeLevelScore(1);
 		}
 
 		public void LeaveTarget()
 		{
+			targetsPool[lastTarget].OnDeReachTarget();
 			LevelManager.inst.ChangeLevelScore(-1);
 		}
 
+		public void SwapTargets()
+		{
+			targetsPool[lastTarget].OnDeReachTarget();
+			targetsPool[currTarget].OnReachTarget();
+		}
+
+		//
+		//
+		// ................................
 		// WE NEED TO MAKE SOME INVESTIGATION ABOUNT BINDING REFERENCES OF OBJECTS WITH DICTIONARY(!!!!)
 		public void MakeSaveStep()
 		{
-			SaveData dat = new SaveData(currPlayer.transform.position, currBox, currTarget, LevelManager.inst.lvlScore);
+			bool stat_1 = false;
+			bool stat_2 = false;
+			if (currBox != null)
+			{
+				Debug.Log("Saved box: " + currBox.transform.position);
+			}
+			if (lastTarget != null)
+			{
+				stat_1 = targetsPool[lastTarget].reachStatus;
+			}
+			if (currTarget != null)
+			{
+				stat_2 = targetsPool[currTarget].reachStatus;
+			}
+			SaveData dat = new SaveData(currPlayer.transform.position, currBox, lastTarget, stat_1, currTarget, stat_2, LevelManager.inst.lvlScore);
 			savedSteps.Push(dat);
-			currBox = null;
-			currTarget = null;
 		}
 
 		public void RestorePrevoiusStep()
@@ -150,9 +205,14 @@ namespace PlayControls
 			LevelManager.inst.lvlScore = dat.score; // Need to invoke in LevelManager change scrore, maybe in getter-setter
 			if (dat.box != null)
 			{
-
+				Debug.Log("dat.box.transform.position" + dat.box.transform.position);
+				Debug.Log("boxesPool[dat.box]: " + boxesPool[dat.box]);
 			}
-			if (dat.target != null)
+			if (dat.oldTarget != null)
+			{
+				
+			}
+			if (dat.newTarget != null)
 			{
 				
 			}
@@ -163,13 +223,21 @@ namespace PlayControls
 	{
 		public Vector3 player {get; private set;}
 		public GameObject box {get; private set;}
-		public GameObject target {get; private set;}
+		public GameObject oldTarget {get; private set;}
+		public bool statusOT {get; private set;}
+		public GameObject newTarget {get; private set;}
+		public bool statusNT {get; private set;}
 		public int score {get; private set;}
-		public SaveData(Vector3 pl, GameObject bx, GameObject tgt, int val)
+		
+		// THIS SAME METHOD DOES NOT MAKE GOOD COPIES OF GAMEOBJECTS
+		public SaveData(Vector3 pl, GameObject bx, GameObject tgt, bool val_1, GameObject tgt_n, bool val_2, int val)
 		{
 			player = pl;
 			box = bx;
-			target = tgt;
+			oldTarget = tgt;
+			newTarget = tgt_n;
+			statusOT = val_1;
+			statusNT = val_2;
 			score = val;
 		}
 	}

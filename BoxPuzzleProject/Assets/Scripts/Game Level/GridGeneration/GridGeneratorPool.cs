@@ -12,6 +12,8 @@ namespace GeneratorControls
 
 		[SerializeField]
 		GridObject go;
+
+		TargetController targetController;
 		// Use this for initialization
 		void Start () 
 		{
@@ -25,7 +27,6 @@ namespace GeneratorControls
  			}
 
 			go = Resources.Load<GridObject>("Prefabs/GridObject");
-			Debug.Log("go object: " + go);
 
 			for (int i = 0; i < widthSize; ++i)
 			{

@@ -41,25 +41,35 @@ namespace PlayControls
 					walkingState = false;
 
                     // Check if we reach or leave any of target places
-					/*
-                    bool reach = GameManager.gmInst.ReachDestination(transform.position);
+					
+                    bool reach = BoxMoverManager.inst.ReachDestination(transform.position);
+
+                    // Temporary (!!)
+                    BoxMoverManager.inst.RestorePrevoiusStep();
+                    // (!!)
+
                     if (reach && !getTarget)
                     {
-                        GameManager.gmInst.GetTarget();
+                        BoxMoverManager.inst.GetTarget();
                     }
                     if (!reach && getTarget)
                     {
-                        GameManager.gmInst.LeaveTarget();
+                        BoxMoverManager.inst.LeaveTarget();
+                    }
+                    if (reach && getTarget)
+                    {
+
                     }
                     getTarget = reach;
-					*/
                 }
             }
 		}
 
 		public void StartMove()
 		{
-			nextPosF = transform.position + new Vector3(moveVector.x, moveVector.y, 0) * BoxMoverManager.inst.walkDistance;
+			nextPosF = transform.position + new Vector3(moveVector.x, 0, moveVector.y) * BoxMoverManager.inst.walkDistance;
+            Debug.Log("currPos: " + transform.position);
+            Debug.Log("nextPos: " + nextPosF);
             walkingState = true;
 		}
     }

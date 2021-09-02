@@ -19,8 +19,6 @@ namespace PlayControls
 			dataFromGrid = gridGeneratorPool.GetAllGridObjects();
 			deltaXField = gridGeneratorPool.widthSize;
 			deltaZField = gridGeneratorPool.heightSize;
-
-			Debug.Log("dataFromGrid: " + dataFromGrid);
         }
 
 		public GameObject GetObjectByCoord(Vector3 coords)
