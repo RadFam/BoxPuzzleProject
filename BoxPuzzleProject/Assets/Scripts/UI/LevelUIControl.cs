@@ -27,7 +27,7 @@ namespace UIControls
 		}
         public void OnStepAheadClick()
 		{
-
+			LevelManager.inst.OnStepBack();
 		}
 
 		public void OnGearClick()

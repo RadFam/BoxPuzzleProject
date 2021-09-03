@@ -53,7 +53,7 @@ namespace PlayControls
 
 		public void OnStepBack()
 		{
-
+			BoxMoverManager.inst.RestorePrevoiusStep();
 		}
 
 		public void ChangeLevelScore(int change)

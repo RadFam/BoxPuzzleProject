@@ -26,9 +26,8 @@ namespace PlayControls
         public void OnReachTarget()
         {
             targetStarController.ReachTarget();            
-            // Change self material
-            Debug.Log("selfGrid.targetObjects: " + selfGrid.targetObjects);
 
+            // Change self material
             meshRenderer.material = selfGrid.targetObjects.targetTexR[selfGrid.objectSubType];
             reachStatus = true;
         }

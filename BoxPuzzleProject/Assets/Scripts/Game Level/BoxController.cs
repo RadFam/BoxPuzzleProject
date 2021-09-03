@@ -45,7 +45,7 @@ namespace PlayControls
                     bool reach = BoxMoverManager.inst.ReachDestination(transform.position);
 
                     // Temporary (!!)
-                    BoxMoverManager.inst.RestorePrevoiusStep();
+                    // BoxMoverManager.inst.RestorePrevoiusStep();
                     // (!!)
 
                     if (reach && !getTarget)
@@ -58,7 +58,7 @@ namespace PlayControls
                     }
                     if (reach && getTarget)
                     {
-
+                        BoxMoverManager.inst.SwapTargets();
                     }
                     getTarget = reach;
                 }
@@ -68,8 +68,8 @@ namespace PlayControls
 		public void StartMove()
 		{
 			nextPosF = transform.position + new Vector3(moveVector.x, 0, moveVector.y) * BoxMoverManager.inst.walkDistance;
-            Debug.Log("currPos: " + transform.position);
-            Debug.Log("nextPos: " + nextPosF);
+            //Debug.Log("currPos: " + transform.position);
+            //Debug.Log("nextPos: " + nextPosF);
             walkingState = true;
 		}
     }

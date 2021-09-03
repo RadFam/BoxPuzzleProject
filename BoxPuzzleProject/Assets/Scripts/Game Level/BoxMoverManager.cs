@@ -23,6 +23,8 @@ namespace PlayControls
 		GameObject currBox;
 		GameObject currTarget;
 		GameObject lastTarget;
+		GameObject currTargetPR;
+		GameObject lastTargetPR;
 		int currScore;
         
         void Awake()
@@ -46,19 +48,12 @@ namespace PlayControls
 			currBox = null;
 			currTarget = null;
 			lastTarget = null;
+			currTargetPR = null;
+			lastTargetPR = null;
 		}
 
 		void Start()
 		{
-			//fieldManager = GetComponent<FieldManager>();
-
-			// Probably we don`t need this steps
-			
-			/*
-			boxesPool.Clear();
-			targetsPool.Clear();
-			savedSteps.Clear();
-			*/
 		}
 
 		public void CorrectPosition(GameObject go)
@@ -96,11 +91,10 @@ namespace PlayControls
 				}
 			}
 			currBox = box;
-			if (currBox != null)
-			{
-				Debug.Log("currBox.transform.position: " + currBox.transform.position);
-			}
+
+			PreReachDestination(dir, coords);
 			MakeSaveStep(); // (!!!!) HERE WE SAVE STEP DATA (!!!!)
+
 			if (box != null)
 			{
 				bool check = CanBoxMoveFurther(dir, box.transform.position);
@@ -130,6 +124,28 @@ namespace PlayControls
 			}
 
 			return fieldManager.IsPassible(nextCoords);
+		}
+
+		void PreReachDestination(Vector2Int dir, Vector3 coords)
+		{
+			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
+			bool res =  fieldManager.IsTarget(nextCoords);
+			lastTargetPR = currTargetPR;
+            if (res)
+            {
+                foreach (KeyValuePair<GameObject, TargetController> item in targetsPool)
+                {
+                    if (item.Key.transform.position.x == nextCoords.x && item.Key.transform.position.z == nextCoords.z)
+                    {
+                        currTargetPR = item.Key;
+                        break;
+                    }
+                }
+            }
+			else
+			{
+				currTargetPR = null;
+			}
 		}
 
 		public bool ReachDestination(Vector3 coords)
@@ -185,59 +201,117 @@ namespace PlayControls
 			{
 				Debug.Log("Saved box: " + currBox.transform.position);
 			}
-			if (lastTarget != null)
+			if (lastTargetPR != null)
 			{
-				stat_1 = targetsPool[lastTarget].reachStatus;
+				stat_1 = targetsPool[lastTargetPR].reachStatus;
+				Debug.Log("last stat: " + stat_1);
 			}
-			if (currTarget != null)
+			if (currTargetPR != null)
 			{
-				stat_2 = targetsPool[currTarget].reachStatus;
+				stat_2 = targetsPool[currTargetPR].reachStatus;
+				Debug.Log("curr stat: " + stat_2);
 			}
-			SaveData dat = new SaveData(currPlayer.transform.position, currBox, lastTarget, stat_1, currTarget, stat_2, LevelManager.inst.lvlScore);
+			SaveData dat = new SaveData(currPlayer.transform.position, currBox, lastTargetPR, stat_1, currTargetPR, stat_2, LevelManager.inst.lvlScore);
 			savedSteps.Push(dat);
 		}
 
 		public void RestorePrevoiusStep()
 		{
+			if (savedSteps.Count == 0)
+			{
+				return;
+			}
+
 			SaveData dat = savedSteps.Pop();
 
 			currPlayer.transform.position = dat.player;
 			LevelManager.inst.lvlScore = dat.score; // Need to invoke in LevelManager change scrore, maybe in getter-setter
-			if (dat.box != null)
+            if (dat.boxPos != null)
+            {
+                foreach (KeyValuePair<GameObject, Vector3> items in dat.boxPos)
+                {
+                    items.Key.transform.position = items.Value;
+                }	
+            }
+			
+			if (dat.oldTgt != null)
 			{
-				Debug.Log("dat.box.transform.position" + dat.box.transform.position);
-				Debug.Log("boxesPool[dat.box]: " + boxesPool[dat.box]);
+				foreach (KeyValuePair<GameObject, bool> items in dat.oldTgt)
+                {
+                    if (targetsPool[items.Key].reachStatus && !items.Value)
+					{
+						targetsPool[items.Key].OnDeReachTarget();
+					}
+					if (!targetsPool[items.Key].reachStatus && items.Value)
+					{
+						targetsPool[items.Key].OnReachTarget();
+					}
+                }	
 			}
-			if (dat.oldTarget != null)
+
+			if (dat.newTgt != null)
 			{
-				
-			}
-			if (dat.newTarget != null)
-			{
-				
+				foreach (KeyValuePair<GameObject, bool> items in dat.newTgt)
+                {
+                    if (targetsPool[items.Key].reachStatus && !items.Value)
+					{
+						targetsPool[items.Key].OnDeReachTarget();
+					}
+					if (!targetsPool[items.Key].reachStatus && items.Value)
+					{
+						targetsPool[items.Key].OnReachTarget();
+					}
+                }	
 			}
 		}
     }
 
 	class SaveData
 	{
+
 		public Vector3 player {get; private set;}
-		public GameObject box {get; private set;}
-		public GameObject oldTarget {get; private set;}
-		public bool statusOT {get; private set;}
-		public GameObject newTarget {get; private set;}
-		public bool statusNT {get; private set;}
+		
+		public Dictionary<GameObject, Vector3> boxPos{get; private set;}
+		public Dictionary<GameObject, bool> oldTgt{get; private set;}
+		public Dictionary<GameObject, bool> newTgt{get; private set;}
 		public int score {get; private set;}
 		
 		// THIS SAME METHOD DOES NOT MAKE GOOD COPIES OF GAMEOBJECTS
 		public SaveData(Vector3 pl, GameObject bx, GameObject tgt, bool val_1, GameObject tgt_n, bool val_2, int val)
 		{
+			boxPos = new Dictionary<GameObject, Vector3>();
+			oldTgt = new Dictionary<GameObject, bool>();
+			newTgt = new Dictionary<GameObject, bool>();
+			
 			player = pl;
-			box = bx;
-			oldTarget = tgt;
-			newTarget = tgt_n;
-			statusOT = val_1;
-			statusNT = val_2;
+			if (bx != null)
+			{
+				Vector3 pos = bx.transform.position;
+				boxPos.Add(bx, pos);
+			}
+			else
+			{
+				boxPos = null;
+			}
+			
+			if (tgt != null)
+			{
+				oldTgt.Add(tgt, val_1);
+			}
+			else
+			{
+				oldTgt = null;
+			}
+
+			if (tgt_n != null)
+			{
+				newTgt.Add(tgt_n, val_2);
+			}
+			else
+			{
+				newTgt = null;
+			}
+
 			score = val;
 		}
 	}
