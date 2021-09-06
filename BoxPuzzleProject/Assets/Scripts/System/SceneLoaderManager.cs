@@ -51,6 +51,7 @@ namespace GameControls
                 {
                     sceneToLoad = 0;
                 }
+                GameManager.inst.ReachLevelNum(sceneToLoad);
 
                 StartCoroutine(StartLoadingScene());
             }

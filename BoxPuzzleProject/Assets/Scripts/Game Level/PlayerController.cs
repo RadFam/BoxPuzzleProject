@@ -17,6 +17,7 @@ namespace PlayControls
 		Vector2Int nextPos;
 		Vector3 nextPosF;
         bool walkingState = false;
+		bool freezeStatus = false;
 		PlayerDirects currentDir;
 		PlayerDirects prevDir;
 		enum PlayerDirects {Down, Left, Right, Up};
@@ -44,9 +45,17 @@ namespace PlayControls
         // Update is called once per frame
         void Update()
         {
-			CheckInputs();
-			WalkCycle();	
+			if (!freezeStatus)
+			{
+				CheckInputs();
+				WalkCycle();
+			}	
         }
+
+		public void FreezePlayer(bool val)
+		{
+			freezeStatus = val;
+		}
 
 		public void SetUIMoves(UIMoveController uiMC)
 		{

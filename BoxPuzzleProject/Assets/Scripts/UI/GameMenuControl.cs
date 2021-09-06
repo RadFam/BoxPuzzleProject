@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayControls;
 
 namespace UIControls
 {
@@ -16,16 +17,21 @@ namespace UIControls
 
         public void OnProceedClick()
 		{
+			BoxMoverManager.inst.currPlayer.FreezePlayer(false);
 			this.gameObject.SetActive(false);
 		}
 
 		public void OnLoadGameClick()
 		{
+			LevelManager.inst.OnLoad();
+			BoxMoverManager.inst.currPlayer.FreezePlayer(true);
 			this.gameObject.SetActive(false);
 		}
 
 		public void OnSaveGameClick()
 		{
+			LevelManager.inst.OnSave();
+			BoxMoverManager.inst.currPlayer.FreezePlayer(true);
 			this.gameObject.SetActive(false);
 		}
 

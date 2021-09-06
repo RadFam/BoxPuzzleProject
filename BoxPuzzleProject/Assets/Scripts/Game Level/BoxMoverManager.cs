@@ -128,8 +128,9 @@ namespace PlayControls
 
 		void PreReachDestination(Vector2Int dir, Vector3 coords)
 		{
-			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * walkDistance;
+			Vector3 nextCoords = coords + new Vector3Int(dir.x, 0, dir.y) * 2 * walkDistance;
 			bool res =  fieldManager.IsTarget(nextCoords);
+			//Debug.Log("PreReach res: " + res);
 			lastTargetPR = currTargetPR;
             if (res)
             {
@@ -175,12 +176,14 @@ namespace PlayControls
 		{
 			targetsPool[currTarget].OnReachTarget(); // need lastTarget(!)
 			LevelManager.inst.ChangeLevelScore(1);
+			currScore++;
 		}
 
 		public void LeaveTarget()
 		{
 			targetsPool[lastTarget].OnDeReachTarget();
 			LevelManager.inst.ChangeLevelScore(-1);
+			currScore--;
 		}
 
 		public void SwapTargets()
@@ -195,21 +198,20 @@ namespace PlayControls
 		// WE NEED TO MAKE SOME INVESTIGATION ABOUNT BINDING REFERENCES OF OBJECTS WITH DICTIONARY(!!!!)
 		public void MakeSaveStep()
 		{
+			//Debug.Log("SAVE STAGE");
 			bool stat_1 = false;
 			bool stat_2 = false;
 			if (currBox != null)
 			{
-				Debug.Log("Saved box: " + currBox.transform.position);
+				//Debug.Log("Saved box: " + currBox.transform.position);
 			}
 			if (lastTargetPR != null)
 			{
 				stat_1 = targetsPool[lastTargetPR].reachStatus;
-				Debug.Log("last stat: " + stat_1);
 			}
 			if (currTargetPR != null)
 			{
 				stat_2 = targetsPool[currTargetPR].reachStatus;
-				Debug.Log("curr stat: " + stat_2);
 			}
 			SaveData dat = new SaveData(currPlayer.transform.position, currBox, lastTargetPR, stat_1, currTargetPR, stat_2, LevelManager.inst.lvlScore);
 			savedSteps.Push(dat);
@@ -225,7 +227,6 @@ namespace PlayControls
 			SaveData dat = savedSteps.Pop();
 
 			currPlayer.transform.position = dat.player;
-			LevelManager.inst.lvlScore = dat.score; // Need to invoke in LevelManager change scrore, maybe in getter-setter
             if (dat.boxPos != null)
             {
                 foreach (KeyValuePair<GameObject, Vector3> items in dat.boxPos)
@@ -263,6 +264,8 @@ namespace PlayControls
 					}
                 }	
 			}
+			LevelManager.inst.ChangeLevelScore(dat.score - currScore);
+			currScore = dat.score;
 		}
     }
 

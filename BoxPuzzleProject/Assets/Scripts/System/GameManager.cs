@@ -90,6 +90,14 @@ namespace GameControls
 			// Load saved level (if it was saved)
 		}
 
+		public void ReachLevelNum(int num)
+		{
+			if (num > openLevels)
+			{
+				openLevels = num;
+			}
+		}
+
 		public void ExitGame()
 		{
 #if UNITY_EDITOR

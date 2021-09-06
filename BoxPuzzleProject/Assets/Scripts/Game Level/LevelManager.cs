@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameControls;
 
 namespace PlayControls
 {
@@ -19,7 +20,9 @@ namespace PlayControls
 
 		public int lvlScore;
 		public int lvlMaxScore;
-        // Use this for initialization
+        
+		[SerializeField]
+		EndLevelEffect endLevelEffect;
 
 		void Awake()
 		{
@@ -58,7 +61,30 @@ namespace PlayControls
 
 		public void ChangeLevelScore(int change)
 		{
-			
+			lvlScore += change;
+			OnScoreChange();
+
+			// Check if we has max score
+			if (lvlScore == lvlMaxScore)
+			{
+				OnMaxScoreGain();
+			}
+		}
+
+		void OnMaxScoreGain()
+		{
+			// Stop walking player
+				BoxMoverManager.inst.currPlayer.FreezePlayer(true);
+
+			// Show WIN effect
+			endLevelEffect.StartWinEffect();	
+		}
+
+		public void EndPlayScene()
+		{
+			// Save level progress (that we pass this level)
+			// Load next scene
+			SceneLoaderManager.inst.LoadNextScene();
 		}
     }
 }
