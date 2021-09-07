@@ -19,7 +19,7 @@ namespace PlayControls
 		SaveManager saveManager;
 
 		public int lvlScore;
-		public int lvlMaxScore;
+		public int lvlMaxScore = 0;
         
 		[SerializeField]
 		EndLevelEffect endLevelEffect;
@@ -40,7 +40,6 @@ namespace PlayControls
 			loadManager = GetComponent<LoadManager>();
 			saveManager = GetComponent<SaveManager>();
 
-			lvlMaxScore = 0;
 			lvlScore = 0;
         }
 
@@ -64,6 +63,7 @@ namespace PlayControls
 			lvlScore += change;
 			OnScoreChange();
 
+			Debug.Log("Max score: " + lvlMaxScore);
 			// Check if we has max score
 			if (lvlScore == lvlMaxScore)
 			{
@@ -74,7 +74,7 @@ namespace PlayControls
 		void OnMaxScoreGain()
 		{
 			// Stop walking player
-				BoxMoverManager.inst.currPlayer.FreezePlayer(true);
+			BoxMoverManager.inst.currPlayer.FreezePlayer(true);
 
 			// Show WIN effect
 			endLevelEffect.StartWinEffect();	

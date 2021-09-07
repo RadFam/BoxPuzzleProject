@@ -10,6 +10,7 @@ namespace GeneratorControls
 		public enum ObjectType{None, Field, Wall, Target, Box};
 		public ObjectType objectType;
 		public int objectSubType;
+		public int throughNumber;
 
 		[SerializeField]
 		MeshFilter meshFilter;

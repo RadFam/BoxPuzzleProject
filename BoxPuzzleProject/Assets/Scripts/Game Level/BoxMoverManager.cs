@@ -235,7 +235,7 @@ namespace PlayControls
                 }	
             }
 			
-			if (dat.oldTgt != null)
+			if (dat.oldTgt != null) // USE TARGET.SetStaus(bool newStat)
 			{
 				foreach (KeyValuePair<GameObject, bool> items in dat.oldTgt)
                 {
@@ -267,6 +267,73 @@ namespace PlayControls
 			LevelManager.inst.ChangeLevelScore(dat.score - currScore);
 			currScore = dat.score;
 		}
+
+		public Dictionary<string, object> FullSaveData(int sceneNum)
+		{
+			Dictionary<string, object> toSaveData = new Dictionary<string, object>();
+			toSaveData.Add("SceneNum", (object)sceneNum);
+			toSaveData.Add("SceneScore", (object)currScore);
+
+			List<Dictionary<int, bool>> targetDat = new List<Dictionary<int, bool>>();
+			foreach(KeyValuePair<GameObject, TargetController> item in targetsPool)
+			{
+				int num = item.Value.GetID();
+				bool state = item.Value.reachStatus;
+				targetDat.Add(new Dictionary<int, bool>{{num, state}});
+			}
+			toSaveData.Add("Targets", (object)targetDat);
+
+			List<Dictionary<int, List<double>>> boxesDat = new List<Dictionary<int, List<double>>>();
+			foreach(KeyValuePair<GameObject, BoxController> item in boxesPool)
+			{
+				int num = item.Value.GetID();
+				List<double> lst = ToFullSaveData.SerializeVector(item.Value.transform.position);
+				boxesDat.Add(new Dictionary<int, List<double>>{{num, lst}});
+			}
+			toSaveData.Add("Boxes", (object)boxesDat);
+
+			toSaveData.Add("Player", (object)ToFullSaveData.SerializeVector(currPlayer.gameObject.transform.position));
+
+			return toSaveData;
+		}
+
+		public void FullLoadData(Dictionary<string, object> toLoadData)
+		{
+			currScore = (int)toLoadData["SceneScore"];
+			// Set score to LevelManager (!!!)
+
+			currPlayer.gameObject.transform.position = ToFullSaveData.DeserializeVector((List<double>)toLoadData["Player"]);
+			
+			List<Dictionary<int, bool>> targetDat = (List<Dictionary<int, bool>>)toLoadData["Targets"];
+			foreach (Dictionary<int, bool> item in targetDat)
+			{
+				foreach(KeyValuePair<int, bool> pair in item)
+				{
+					foreach (KeyValuePair<GameObject, TargetController> item2 in targetsPool)
+					{
+						if (item2.Value.GetID() == pair.Key)
+						{
+							targetsPool[item2.Key].SetStaus(pair.Value);
+						}
+					}
+				}
+			}
+
+			List<Dictionary<int, List<double>>> boxesDat = (List<Dictionary<int, List<double>>>)toLoadData["Boxes"];
+			foreach (Dictionary<int, List<double>> item in boxesDat)
+			{
+				foreach(KeyValuePair<int, List<double>> pair in item)
+				{
+					foreach (KeyValuePair<GameObject, BoxController> item2 in boxesPool)
+					{
+						if (item2.Value.GetID() == pair.Key)
+						{
+							targetsPool[item2.Key].transform.position = ToFullSaveData.DeserializeVector(pair.Value);
+						}
+					}
+				}
+			}
+		}
     }
 
 	class SaveData
@@ -279,7 +346,6 @@ namespace PlayControls
 		public Dictionary<GameObject, bool> newTgt{get; private set;}
 		public int score {get; private set;}
 		
-		// THIS SAME METHOD DOES NOT MAKE GOOD COPIES OF GAMEOBJECTS
 		public SaveData(Vector3 pl, GameObject bx, GameObject tgt, bool val_1, GameObject tgt_n, bool val_2, int val)
 		{
 			boxPos = new Dictionary<GameObject, Vector3>();
@@ -316,6 +382,24 @@ namespace PlayControls
 			}
 
 			score = val;
+		}
+	}
+
+	class ToFullSaveData
+	{
+		public static List<double> SerializeVector(Vector3 vct)
+		{
+			List<double> list = new List<double>{0,0,0};
+			list[0] = (double)vct.x;
+			list[1] = (double)vct.y;
+			list[2] = (double)vct.z;
+			return list;
+		}
+
+		public static Vector3 DeserializeVector(List<double> lst)
+		{
+			Vector3 ans = new Vector3((float)lst[0], (float)lst[1], (float)lst[2]);
+			return ans;
 		}
 	}
 }

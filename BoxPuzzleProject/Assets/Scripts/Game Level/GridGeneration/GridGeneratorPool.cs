@@ -34,6 +34,7 @@ namespace GeneratorControls
 				{
 					GridObject gg = Instantiate(go, new Vector3((i-widthSize/2)*BoxMoverManager.inst.walkDistance, 0.5f, (j-heightSize/2)*BoxMoverManager.inst.walkDistance), Quaternion.identity);
 					gg.gameObject.transform.parent = this.transform;
+					gg.throughNumber = i + j * widthSize;
 				}
 			}
 		}

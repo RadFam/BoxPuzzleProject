@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GeneratorControls;
 
 namespace PlayControls
 {
@@ -72,5 +73,10 @@ namespace PlayControls
             //Debug.Log("nextPos: " + nextPosF);
             walkingState = true;
 		}
+
+        public int GetID()
+        {
+            return gameObject.GetComponent<GridObject>().throughNumber;
+        }
     }
 }

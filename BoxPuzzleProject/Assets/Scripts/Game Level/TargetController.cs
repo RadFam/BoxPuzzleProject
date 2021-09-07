@@ -40,5 +40,24 @@ namespace PlayControls
             meshRenderer.material = selfGrid.targetObjects.targetTex[selfGrid.objectSubType];
             reachStatus = false;
         }
+
+        public int GetID()
+        {
+            return gameObject.GetComponent<GridObject>().throughNumber;
+        }
+
+        public void SetStaus(bool newStat)
+        {
+            if (reachStatus && !newStat)
+            {
+                OnDeReachTarget();
+                return;
+            }
+            if (!reachStatus && newStat)
+            {
+                OnReachTarget();
+                return;
+            }
+        }
     }
 }
