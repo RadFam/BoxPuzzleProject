@@ -114,5 +114,10 @@ namespace GameControls
 
             yield return null;
         }
+
+        public int CurrSceneNum()
+        {
+            return currScene;
+        }
     }
 }

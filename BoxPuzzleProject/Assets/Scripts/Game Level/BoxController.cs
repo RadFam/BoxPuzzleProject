@@ -42,7 +42,6 @@ namespace PlayControls
 					walkingState = false;
 
                     // Check if we reach or leave any of target places
-					
                     bool reach = BoxMoverManager.inst.ReachDestination(transform.position);
 
                     // Temporary (!!)

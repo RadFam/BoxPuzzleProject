@@ -299,8 +299,8 @@ namespace PlayControls
 
 		public void FullLoadData(Dictionary<string, object> toLoadData)
 		{
+			LevelManager.inst.ChangeLevelScore((int)toLoadData["SceneScore"] - currScore);
 			currScore = (int)toLoadData["SceneScore"];
-			// Set score to LevelManager (!!!)
 
 			currPlayer.gameObject.transform.position = ToFullSaveData.DeserializeVector((List<double>)toLoadData["Player"]);
 			
@@ -328,11 +328,13 @@ namespace PlayControls
 					{
 						if (item2.Value.GetID() == pair.Key)
 						{
-							targetsPool[item2.Key].transform.position = ToFullSaveData.DeserializeVector(pair.Value);
+							boxesPool[item2.Key].transform.position = ToFullSaveData.DeserializeVector(pair.Value);
 						}
 					}
 				}
 			}
+
+			savedSteps.Clear();
 		}
     }
 

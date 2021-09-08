@@ -60,7 +60,7 @@ namespace PlayControls
 			Vector3 realPos = GetAdaptedCoordinates(coords);
 			//Debug.Log("Real coords: " + realPos);
 
-			if ((realPos.x >= -1*deltaXField/2 && realPos.x <= deltaXField/2) && (realPos.z >= -1*deltaZField/2 && realPos.z <= deltaZField/2))
+			if ((realPos.x >= -1*deltaXField/2.0f && realPos.x <= deltaXField/2.0f) && (realPos.z >= -1*deltaZField/2.0f && realPos.z <= deltaZField/2.0f))
 			{
 				GameObject go = GetObjectByCoord(realPos);
 				//Debug.Log("go: " + go + " " + go.transform.position);
@@ -77,13 +77,18 @@ namespace PlayControls
 		{
 			Vector3 realPos = GetAdaptedCoordinates(coords);
 
-			if ((realPos.x >= -1*deltaXField/2 && realPos.x <= deltaXField/2) && (realPos.z >= -1*deltaZField/2 && realPos.z <= deltaZField/2))
+			if ((realPos.x >= -1*deltaXField/2.0f && realPos.x <= deltaXField/2.0f) && (realPos.z >= -1*deltaZField/2.0f && realPos.z <= deltaZField/2.0f))
 			{
-				GameObject go = GetObjectByCoord(realPos);
-				if (dataFromGrid[go].objectType == GridObject.ObjectType.Target)
-				{
-					return true;
-				}
+                foreach (KeyValuePair<GameObject, GridObject> pr in dataFromGrid)
+                {
+                    if (pr.Key.transform.position.x == coords.x && pr.Key.transform.position.z == coords.z)
+                    {
+                        if (dataFromGrid[pr.Key].objectType == GridObject.ObjectType.Target)
+                        {
+                            return true;
+                        }
+                    }
+                }
 			}
 
 			return false;

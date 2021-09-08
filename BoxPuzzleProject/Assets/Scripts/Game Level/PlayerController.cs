@@ -29,7 +29,7 @@ namespace PlayControls
         {
 			playerAnim = GetComponent<Animator>();
 			dirVectors = new List<Vector2Int>{new Vector2Int(0, -1), new Vector2Int(-1, 0), new Vector2Int(1, 0), new Vector2Int(0, 1)};
-			locRots = new List<Vector3>{new Vector3(0,-90,0), new Vector3(0,180,0), new Vector3(0,0,0), new Vector3(0,90,0)};
+			locRots = new List<Vector3>{new Vector3(0,90,0), new Vector3(0,180,0), new Vector3(0,0,0), new Vector3(0,-90,0)};
 			currentDir = PlayerDirects.Right;
 			prevDir = currentDir;
 			pushWalk = 0;
@@ -90,26 +90,38 @@ namespace PlayControls
 
 		void MoveUp()
 		{
-			currentDir = PlayerDirects.Up;
-			CheckForWalking();
+			if (!walkingState)
+			{
+				currentDir = PlayerDirects.Up;
+				CheckForWalking();
+			}
 		}
 
 		void MoveDown()
 		{
-			currentDir = PlayerDirects.Down;
-			CheckForWalking();
+			if (!walkingState)
+			{
+				currentDir = PlayerDirects.Down;
+				CheckForWalking();
+			}
 		}
 
 		void MoveLeft()
 		{
-			currentDir = PlayerDirects.Left;
-			CheckForWalking();
+			if (!walkingState)
+			{
+				currentDir = PlayerDirects.Left;
+				CheckForWalking();
+			}
 		}
 
 		void MoveRight()
 		{
-			currentDir = PlayerDirects.Right;
-			CheckForWalking();
+			if (!walkingState)
+			{
+				currentDir = PlayerDirects.Right;
+				CheckForWalking();
+			}
 		}
 
 		void CheckForWalking()

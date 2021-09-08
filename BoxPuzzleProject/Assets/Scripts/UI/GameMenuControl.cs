@@ -24,14 +24,14 @@ namespace UIControls
 		public void OnLoadGameClick()
 		{
 			LevelManager.inst.OnLoad();
-			BoxMoverManager.inst.currPlayer.FreezePlayer(true);
+			BoxMoverManager.inst.currPlayer.FreezePlayer(false);
 			this.gameObject.SetActive(false);
 		}
 
 		public void OnSaveGameClick()
 		{
 			LevelManager.inst.OnSave();
-			BoxMoverManager.inst.currPlayer.FreezePlayer(true);
+			BoxMoverManager.inst.currPlayer.FreezePlayer(false);
 			this.gameObject.SetActive(false);
 		}
 

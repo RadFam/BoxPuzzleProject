@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using GameControls;
 
@@ -45,12 +46,37 @@ namespace PlayControls
 
         public void OnLoad()
 		{
-
+			// Get Level num
+			//int myScene = SceneLoaderManager.inst.CurrSceneNum();
+			int myScene = 1;
+			string filename = "SceneSav_" + myScene.ToString() + ".ith";
+			string savePath = Path.Combine(Application.persistentDataPath, filename);
+			if (File.Exists(savePath))
+			{
+				// Get Dictionary from BinaryFormatter
+				Dictionary<string, object> loadData;
+				using (FileStream stream = File.Open(savePath, FileMode.Open))
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                	loadData = (Dictionary<string, object>)formatter.Deserialize(stream);
+                }
+				BoxMoverManager.inst.FullLoadData(loadData);
+			}
 		}
 
 		public void OnSave()
 		{
+			//int myScene = SceneLoaderManager.inst.CurrSceneNum();
+			int myScene = 1;
+			string filename = "SceneSav_" + myScene.ToString() + ".ith";
+			string savePath = Path.Combine(Application.persistentDataPath, filename);
 
+			Dictionary<string, object> saveData = BoxMoverManager.inst.FullSaveData(myScene);
+			using (FileStream stream = File.Open(savePath, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, saveData);
+            }
 		}
 
 		public void OnStepBack()

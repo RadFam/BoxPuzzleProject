@@ -23,7 +23,7 @@ namespace GeneratorControls
 		public void GenerateBaseGrid() // Just for brief - width and height are even numbers
 		{
 			foreach (Transform child in this.transform) {
-     			GameObject.Destroy(child.gameObject);
+     			GameObject.DestroyImmediate(child.gameObject, true);
  			}
 
 			go = Resources.Load<GridObject>("Prefabs/GridObject");
@@ -32,7 +32,7 @@ namespace GeneratorControls
 			{
 				for (int j = 0; j < heightSize; ++j)
 				{
-					GridObject gg = Instantiate(go, new Vector3((i-widthSize/2)*BoxMoverManager.inst.walkDistance, 0.5f, (j-heightSize/2)*BoxMoverManager.inst.walkDistance), Quaternion.identity);
+					GridObject gg = Instantiate(go, new Vector3((i-widthSize/2.0f)*1, 0.5f, (j-heightSize/2.0f)*1), Quaternion.identity) as GridObject;
 					gg.gameObject.transform.parent = this.transform;
 					gg.throughNumber = i + j * widthSize;
 				}
