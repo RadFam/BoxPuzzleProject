@@ -166,6 +166,8 @@ namespace PlayControls
                     }
                     pushWalk = 0;
                     playerAnim.SetBool("isIdle", true);
+
+					LevelManager.inst.StopPlayEffect();
                 }
             }
         }

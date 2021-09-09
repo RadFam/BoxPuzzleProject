@@ -10,6 +10,7 @@ namespace PlayControls
     public class LevelManager : MonoBehaviour
     {
 		public static LevelManager inst;
+		public enum EffectsNames { WalkStomp, DragBox, WinRound};
 
 		#region ActionsDuringLevelPlay
 		public Action OnScoreChange;
@@ -21,9 +22,14 @@ namespace PlayControls
 
 		public int lvlScore;
 		public int lvlMaxScore = 0;
+
+		SoundResources soundResources;
         
 		[SerializeField]
 		EndLevelEffect endLevelEffect;
+		
+		[SerializeField]
+		AudioSource myAudioEffects;
 
 		void Awake()
 		{
@@ -41,8 +47,51 @@ namespace PlayControls
 			loadManager = GetComponent<LoadManager>();
 			saveManager = GetComponent<SaveManager>();
 
+			soundResources = Resources.Load<SoundResources>("ScriptableObjects/SoundData");
+			
+			// Temporary turn off(!!!)
+			//myAudioEffects.volume = GameManager.inst.currEffectsVol;
+			//GameManager.inst.OnSettingsChange += ChangeEffectsVol;
+
 			lvlScore = 0;
         }
+
+		public void ChangeEffectsVol()
+		{
+			myAudioEffects.volume = GameManager.inst.currEffectsVol;
+		}
+
+		public void PlayEffect(EffectsNames en)
+		{
+			if (en == EffectsNames.WalkStomp)
+			{
+				myAudioEffects.loop = true;
+				myAudioEffects.clip = soundResources.stompEffect;
+				myAudioEffects.Play();
+				return;
+			}
+
+			if (en == EffectsNames.DragBox)
+			{
+				myAudioEffects.loop = true;
+				myAudioEffects.clip = soundResources.dragEffect;
+				myAudioEffects.Play();
+				return;
+			}
+
+			if (en == EffectsNames.WinRound)
+			{
+				myAudioEffects.loop = false;
+				myAudioEffects.clip = soundResources.winEffect;
+				myAudioEffects.Play();
+				return;
+			}
+		}
+
+		public void StopPlayEffect()
+		{
+			myAudioEffects.Stop();
+		}
 
         public void OnLoad()
 		{
@@ -89,7 +138,6 @@ namespace PlayControls
 			lvlScore += change;
 			OnScoreChange();
 
-			Debug.Log("Max score: " + lvlMaxScore);
 			// Check if we has max score
 			if (lvlScore == lvlMaxScore)
 			{
@@ -103,6 +151,8 @@ namespace PlayControls
 			BoxMoverManager.inst.currPlayer.FreezePlayer(true);
 
 			// Show WIN effect
+			StopPlayEffect();
+			PlayEffect(EffectsNames.WinRound);
 			endLevelEffect.StartWinEffect();	
 		}
 

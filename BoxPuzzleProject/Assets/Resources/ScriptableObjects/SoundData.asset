@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a904b90c599aa4f8f23eeae57ab8e7, type: 3}
+  m_Name: SoundData
+  m_EditorClassIdentifier: 
+  menuMusic: {fileID: 8300000, guid: a3d9f8046cfd6254e9b90a2e43a9ada4, type: 3}
+  gameMusic: {fileID: 8300000, guid: d4db9344af1dc4f459112f3beb5b6ade, type: 3}
+  winEffect: {fileID: 8300000, guid: 6055e4b4c9e88f44b9f4108fed432775, type: 3}
+  stompEffect: {fileID: 8300000, guid: 6c8a01a416b7c784a8a8c0e2238b3dbf, type: 3}
+  dragEffect: {fileID: 8300000, guid: 4281865120297234bb130d31570f9578, type: 3}

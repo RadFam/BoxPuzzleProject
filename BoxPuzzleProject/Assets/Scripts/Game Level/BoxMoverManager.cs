@@ -95,6 +95,8 @@ namespace PlayControls
 			PreReachDestination(dir, coords);
 			MakeSaveStep(); // (!!!!) HERE WE SAVE STEP DATA (!!!!)
 
+			bool res = fieldManager.IsPassible(nextCoords);
+
 			if (box != null)
 			{
 				bool check = CanBoxMoveFurther(dir, box.transform.position);
@@ -102,13 +104,21 @@ namespace PlayControls
 				{
 					boxesPool[box].moveVector = dir;
 					boxesPool[box].StartMove();
+					LevelManager.inst.PlayEffect(LevelManager.EffectsNames.DragBox);
 				}
 				push = 1;
 				return check;
 			}
+			else
+			{
+				if (res)
+				{
+					LevelManager.inst.PlayEffect(LevelManager.EffectsNames.WalkStomp);
+				}
+			}
 
 			push = 0;
-			return fieldManager.IsPassible(nextCoords); 
+			return res; 
 		}
 
 		public bool CanBoxMoveFurther(Vector2Int dir, Vector3 coords)
@@ -151,6 +161,7 @@ namespace PlayControls
 
 		public bool ReachDestination(Vector3 coords)
 		{
+			LevelManager.inst.StopPlayEffect();
 			bool res =  fieldManager.IsTarget(coords);
 
 			lastTarget = currTarget;

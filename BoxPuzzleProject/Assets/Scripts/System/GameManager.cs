@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
@@ -19,8 +19,14 @@ namespace GameControls
 		public bool saveProgress;
 		string saveFilename;
 
+		public Action OnSettingsChange;
+
 		Dictionary<string, object> savebleGameSettings;
 		#endregion
+
+		[SerializeField]
+		AudioSource myAudioMusic;
+		SoundResources soundResources;
         void Awake()
         {
 			if (inst == null)
@@ -34,6 +40,8 @@ namespace GameControls
 
 			savebleGameSettings = new Dictionary<string, object>();
 			saveFilename = "SettingsBM.ith";
+
+			soundResources = Resources.Load<SoundResources>("ScriptableObjects/SoundData");
 
 			LoadGame();
         }
@@ -78,7 +86,7 @@ namespace GameControls
 			}
 
 			// Else restore data from Scriptable Object with default settings
-			DefaultSettings ds = Resources.Load("DefaultSettings") as DefaultSettings;
+			DefaultSettings ds = Resources.Load("ScriptableObjects/SettingsData") as DefaultSettings;
 			currScore = ds.defaultScore;
 			currMusicVol = ds.defaultMusic;
 			currEffectsVol = ds.defaultEffects;
