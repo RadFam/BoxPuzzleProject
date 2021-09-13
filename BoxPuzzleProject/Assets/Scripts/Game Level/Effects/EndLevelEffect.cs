@@ -11,12 +11,17 @@ namespace PlayControls
 		[SerializeField]
 		GameObject winText;
 		[SerializeField]
+		GameObject bonusText;
+		[SerializeField]
 		ParticleSystem starExplode;
+
+		bool bonusTextShow;
         
-		public void StartWinEffect()
+		public void StartWinEffect(bool bonus=false)
 		{
 			winText.gameObject.SetActive(true);
 			starExplode.gameObject.SetActive(true);
+			bonusTextShow = bonus;
 			StartCoroutine(StageOne());
 		}
 		
@@ -41,6 +46,13 @@ namespace PlayControls
 
 		IEnumerator StageTwo()
 		{
+			if (bonusTextShow)
+			{
+				bonusText.gameObject.SetActive(true);
+				string message = "Уровень пройден за " + LevelManager.inst.fixedTime.ToString() + " секунд\nВы получаете " + LevelManager.inst.bonusSteps.ToString() + " дополнительных шага назад";
+				bonusText.GetComponent<Text>().text = message;
+			}
+
 			Vector3 intScale = new Vector3(1.2f, 1.2f, 1.2f);
 			Vector3 tgtScale = new Vector3(1.0f, 1.0f, 1.0f);
 			Quaternion startRot = winText.transform.rotation;

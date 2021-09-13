@@ -224,7 +224,7 @@ namespace PlayControls
 			{
 				stat_2 = targetsPool[currTargetPR].reachStatus;
 			}
-			SaveData dat = new SaveData(currPlayer.transform.position, currBox, lastTargetPR, stat_1, currTargetPR, stat_2, LevelManager.inst.lvlScore);
+			SaveData dat = new SaveData(currPlayer.transform.position, currBox, lastTargetPR, stat_1, currTargetPR, stat_2, LevelManager.inst.lvlScore, LevelManager.inst.levelStepsBack, LevelManager.inst.addStepsBack);
 			savedSteps.Push(dat);
 		}
 
@@ -275,7 +275,8 @@ namespace PlayControls
 					}
                 }	
 			}
-			LevelManager.inst.ChangeLevelScore(dat.score - currScore);
+			LevelManager.inst.ChangeLevelScore(dat.score - currScore, false);
+			LevelManager.inst.SetBackSteps(dat.lvlSteps, dat.addSteps);
 			currScore = dat.score;
 		}
 
@@ -284,6 +285,8 @@ namespace PlayControls
 			Dictionary<string, object> toSaveData = new Dictionary<string, object>();
 			toSaveData.Add("SceneNum", (object)sceneNum);
 			toSaveData.Add("SceneScore", (object)currScore);
+			toSaveData.Add("SceneLvlSteps", (object)LevelManager.inst.levelStepsBack);
+			toSaveData.Add("SceneAddSteps", (object)LevelManager.inst.addStepsBack);
 
 			List<Dictionary<int, bool>> targetDat = new List<Dictionary<int, bool>>();
 			foreach(KeyValuePair<GameObject, TargetController> item in targetsPool)
@@ -310,7 +313,8 @@ namespace PlayControls
 
 		public void FullLoadData(Dictionary<string, object> toLoadData)
 		{
-			LevelManager.inst.ChangeLevelScore((int)toLoadData["SceneScore"] - currScore);
+			LevelManager.inst.ChangeLevelScore((int)toLoadData["SceneScore"] - currScore, false);
+			LevelManager.inst.SetBackSteps((int)toLoadData["SceneLvlSteps"], (int)toLoadData["SceneAddSteps"]);
 			currScore = (int)toLoadData["SceneScore"];
 
 			currPlayer.gameObject.transform.position = ToFullSaveData.DeserializeVector((List<double>)toLoadData["Player"]);
@@ -358,8 +362,10 @@ namespace PlayControls
 		public Dictionary<GameObject, bool> oldTgt{get; private set;}
 		public Dictionary<GameObject, bool> newTgt{get; private set;}
 		public int score {get; private set;}
+		public int lvlSteps{get; private set;}
+		public int addSteps{get; private set;}
 		
-		public SaveData(Vector3 pl, GameObject bx, GameObject tgt, bool val_1, GameObject tgt_n, bool val_2, int val)
+		public SaveData(Vector3 pl, GameObject bx, GameObject tgt, bool val_1, GameObject tgt_n, bool val_2, int val, int lvl, int add)
 		{
 			boxPos = new Dictionary<GameObject, Vector3>();
 			oldTgt = new Dictionary<GameObject, bool>();
@@ -395,6 +401,8 @@ namespace PlayControls
 			}
 
 			score = val;
+			lvlSteps = lvl;
+			addSteps = add;
 		}
 	}
 

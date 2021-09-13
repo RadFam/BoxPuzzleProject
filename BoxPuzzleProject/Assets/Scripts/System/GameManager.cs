@@ -13,6 +13,7 @@ namespace GameControls
 		
 		#region GlobalGameSettings
 		public int currScore;
+		public int cummSteps;
 		public int openLevels;
 		public float currMusicVol;
 		public float currEffectsVol;
@@ -23,6 +24,8 @@ namespace GameControls
 
 		Dictionary<string, object> savebleGameSettings;
 		#endregion
+		[SerializeField]
+		List<int> prefLevelTimes;
 
 		[SerializeField]
 		AudioSource myAudioMusic;
@@ -52,6 +55,7 @@ namespace GameControls
 			{
 				savebleGameSettings.Clear();
 				savebleGameSettings.Add("ScoreValue", (object)currScore);
+				savebleGameSettings.Add("StepsBack", (object)cummSteps);
 				savebleGameSettings.Add("MusicVolume", (object)currMusicVol);
 				savebleGameSettings.Add("EffectsVolume", (object)currEffectsVol);
 				savebleGameSettings.Add("OpenedLevels", (object)openLevels);
@@ -78,6 +82,7 @@ namespace GameControls
                 	savebleGameSettings = (Dictionary<string, object>)formatter.Deserialize(stream);
                 }
 				currScore = (int)savebleGameSettings["ScoreValue"];
+				cummSteps = (int)savebleGameSettings["StepsBack"];
 				currMusicVol = (int)savebleGameSettings["MusicVolume"];
 				currEffectsVol = (int)savebleGameSettings["EffectsVolume"];
 				openLevels = (int)savebleGameSettings["OpenedLevels"];
@@ -91,6 +96,7 @@ namespace GameControls
 			currMusicVol = ds.defaultMusic;
 			currEffectsVol = ds.defaultEffects;
 			openLevels = ds.defaultLevel;
+			cummSteps = 0;
 		}
 
 		public void LoadLevelGame()
@@ -104,6 +110,12 @@ namespace GameControls
 			{
 				openLevels = num;
 			}
+		}
+
+		public int GetPrefLevelTime()
+		{
+			int currScene = SceneLoaderManager.inst.CurrSceneNum();
+			return prefLevelTimes[currScene-1];
 		}
 
 		public void ExitGame()

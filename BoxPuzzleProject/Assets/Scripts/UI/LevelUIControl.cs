@@ -15,6 +15,16 @@ namespace UIControls
 		GameObject GameMenu;
 		[SerializeField]
 		Text scoreText;
+		[SerializeField]
+		Text currTime;
+		[SerializeField]
+		Text prefTime;
+		[SerializeField]
+		Image backStars;
+		[SerializeField]
+		Text backSteps;
+		[SerializeField]
+		List<Sprite> starBackSteps;
 
 		float deltaTimer;
 		bool stepAhead;
@@ -22,6 +32,9 @@ namespace UIControls
         void Start()
         {
 			LevelManager.inst.OnScoreChange += ChangeScore;
+			LevelManager.inst.OnStepsBackChange += ChangeBackSteps;
+			LevelManager.inst.OnStepsBackIncrease += ChangeBackSteps;
+			LevelManager.inst.OnTimeIncrease += ChangePlayTime;
 			deltaTimer = 0.0f;
 			stepAhead = true;
         }
@@ -59,6 +72,25 @@ namespace UIControls
 		public void ChangeScore()
 		{
 			scoreText.text = "Score: " + LevelManager.inst.lvlScore.ToString();
+		}
+
+		public void ChangeBackSteps()
+		{
+			if (LevelManager.inst.levelStepsBack == 3 && LevelManager.inst.addStepsBack >= 0)
+			{
+				backStars.sprite = starBackSteps[LevelManager.inst.levelStepsBack];
+				backSteps.text = " +" + LevelManager.inst.addStepsBack.ToString();
+			}
+			if (LevelManager.inst.levelStepsBack < 3)
+			{
+				backStars.sprite = starBackSteps[LevelManager.inst.levelStepsBack];
+			}
+		}
+
+		public void ChangePlayTime()
+		{
+			currTime.text = LevelManager.inst.currentTime.ToString();
+			prefTime.text = LevelManager.inst.prefferableTime.ToString();
 		}
     }
 }
