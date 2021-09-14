@@ -24,6 +24,8 @@ namespace UIControls
 		[SerializeField]
 		Text backSteps;
 		[SerializeField]
+		ChangeScoreEffect changeScoreEffect;
+		[SerializeField]
 		List<Sprite> starBackSteps;
 
 		float deltaTimer;

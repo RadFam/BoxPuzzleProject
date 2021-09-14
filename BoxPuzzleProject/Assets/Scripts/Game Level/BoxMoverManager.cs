@@ -187,14 +187,14 @@ namespace PlayControls
 		{
 			targetsPool[currTarget].OnReachTarget(); // need lastTarget(!)
 			LevelManager.inst.ChangeLevelScore(1);
-			currScore++;
+			//currScore++;
 		}
 
 		public void LeaveTarget()
 		{
 			targetsPool[lastTarget].OnDeReachTarget();
 			LevelManager.inst.ChangeLevelScore(-1);
-			currScore--;
+			//currScore--;
 		}
 
 		public void SwapTargets()
@@ -275,16 +275,17 @@ namespace PlayControls
 					}
                 }	
 			}
-			LevelManager.inst.ChangeLevelScore(dat.score - currScore, false);
+			//LevelManager.inst.ChangeLevelScore(dat.score - currScore, false);
+			LevelManager.inst.ChangeLevelScore(dat.score - LevelManager.inst.lvlScore, false);
 			LevelManager.inst.SetBackSteps(dat.lvlSteps, dat.addSteps);
-			currScore = dat.score;
+			//currScore = dat.score;
 		}
 
 		public Dictionary<string, object> FullSaveData(int sceneNum)
 		{
 			Dictionary<string, object> toSaveData = new Dictionary<string, object>();
 			toSaveData.Add("SceneNum", (object)sceneNum);
-			toSaveData.Add("SceneScore", (object)currScore);
+			toSaveData.Add("SceneScore", (object)LevelManager.inst.lvlScore);
 			toSaveData.Add("SceneLvlSteps", (object)LevelManager.inst.levelStepsBack);
 			toSaveData.Add("SceneAddSteps", (object)LevelManager.inst.addStepsBack);
 
@@ -313,9 +314,9 @@ namespace PlayControls
 
 		public void FullLoadData(Dictionary<string, object> toLoadData)
 		{
-			LevelManager.inst.ChangeLevelScore((int)toLoadData["SceneScore"] - currScore, false);
+			LevelManager.inst.ChangeLevelScore((int)toLoadData["SceneScore"] - LevelManager.inst.lvlScore, false);
 			LevelManager.inst.SetBackSteps((int)toLoadData["SceneLvlSteps"], (int)toLoadData["SceneAddSteps"]);
-			currScore = (int)toLoadData["SceneScore"];
+			//currScore = (int)toLoadData["SceneScore"];
 
 			currPlayer.gameObject.transform.position = ToFullSaveData.DeserializeVector((List<double>)toLoadData["Player"]);
 			
