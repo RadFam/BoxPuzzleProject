@@ -932,6 +932,21 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114543302955073958, guid: 22657dfcd4a24e6469ca588aa4925980,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.98039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 114543302955073958, guid: 22657dfcd4a24e6469ca588aa4925980,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.7607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 114543302955073958, guid: 22657dfcd4a24e6469ca588aa4925980,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.03137255
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22657dfcd4a24e6469ca588aa4925980, type: 2}
   m_IsPrefabAsset: 0
@@ -1029,10 +1044,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currScore: 0
+  cummSteps: 0
   openLevels: 0
   currMusicVol: 0
   currEffectsVol: 0
   saveProgress: 0
+  prefLevelTimes: 
   myAudioMusic: {fileID: 433487172}
 --- !u!114 &433487170
 MonoBehaviour:

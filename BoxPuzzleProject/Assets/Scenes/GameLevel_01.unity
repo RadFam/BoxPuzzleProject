@@ -13404,6 +13404,7 @@ MonoBehaviour:
   prefTime: {fileID: 830082706}
   backStars: {fileID: 331705090}
   backSteps: {fileID: 609763301}
+  changeScoreEffect: {fileID: 0}
   starBackSteps:
   - {fileID: 21300000, guid: 863a378796ec90c42983c35e0d56c8fd, type: 3}
   - {fileID: 21300000, guid: 4e641a1d018d3fa4d981b240734e1adb, type: 3}
@@ -20804,7 +20805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1942480674
 RectTransform:
   m_ObjectHideFlags: 0
