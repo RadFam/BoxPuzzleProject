@@ -10101,7 +10101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &973793081
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13404,7 +13404,7 @@ MonoBehaviour:
   prefTime: {fileID: 830082706}
   backStars: {fileID: 331705090}
   backSteps: {fileID: 609763301}
-  changeScoreEffect: {fileID: 0}
+  changeScoreEffect: {fileID: 1546845131}
   starBackSteps:
   - {fileID: 21300000, guid: 863a378796ec90c42983c35e0d56c8fd, type: 3}
   - {fileID: 21300000, guid: 4e641a1d018d3fa4d981b240734e1adb, type: 3}
@@ -14806,7 +14806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1751653749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21194,12 +21194,12 @@ MonoBehaviour:
   lvlScore: 0
   lvlMaxScore: 0
   currentTime: 0
-  prefferableTime: 0
+  prefferableTime: 100
   fixedTime: 0
   levelStepsBack: 0
   addStepsBack: 0
   bonusSteps: 0
-  deltaStepsScore: 0
+  deltaStepsScore: 5
   endLevelEffect: {fileID: 1546845129}
   addBackStepEffect: {fileID: 0}
   myAudioEffects: {fileID: 2081886403}

@@ -77,6 +77,7 @@ namespace PlayControls
 			addStepsBack = GameManager.inst.cummSteps;
 			currentTime = 0;
 			fixedTime = 0;
+			Debug.Log("Start of LevelManager");
 			prefferableTime = GameManager.inst.GetPrefLevelTime();
 			deltaTimer = 0.0f;
         }

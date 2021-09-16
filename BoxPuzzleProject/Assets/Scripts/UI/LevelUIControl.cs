@@ -83,7 +83,7 @@ namespace UIControls
 				backStars.sprite = starBackSteps[LevelManager.inst.levelStepsBack];
 				backSteps.text = " +" + LevelManager.inst.addStepsBack.ToString();
 			}
-			if (LevelManager.inst.levelStepsBack < 3)
+			if (LevelManager.inst.levelStepsBack <= 3 && LevelManager.inst.addStepsBack == 0)
 			{
 				backStars.sprite = starBackSteps[LevelManager.inst.levelStepsBack];
 			}

@@ -14,6 +14,7 @@ namespace GameControls
         public static SceneLoaderManager inst;
         public enum SceneNames { InitMenuScene, GameLevel_01, GameLevel_02, GameLevel_03, GameLevel_04, GameLevel_05 };
 
+        [SerializeField]
         Image fadeImage;
 
         float fadeAlpha;
@@ -67,11 +68,13 @@ namespace GameControls
             UiCommonControl.inst.OnCloseScene(currScene);
             yield return StartCoroutine(FadeIn());
 
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(((SceneNames)sceneToLoad).ToString("g"), LoadSceneMode.Single);
+            Debug.Log("Start to load new Scene");
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(((SceneNames)sceneToLoad).ToString("g"), LoadSceneMode.Single); // Возможно, проблема в асинхронной подгрузке сцены!!
             while (!asyncLoad.isDone)
             {
                 yield return null;
             }
+            Debug.Log("New Scene is Loaded");
             currScene = sceneToLoad;
 
             yield return StartCoroutine(FadeOut());
