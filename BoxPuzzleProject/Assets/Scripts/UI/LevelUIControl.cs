@@ -59,6 +59,7 @@ namespace UIControls
 		{
 			if (stepAhead)
 			{
+				Debug.Log("Back step clicked");
 				LevelManager.inst.OnStepBack();
 				stepAhead = false;
 				deltaTimer = 0.0f;
@@ -78,6 +79,7 @@ namespace UIControls
 
 		public void ChangeBackSteps()
 		{
+			Debug.Log("LevelUIControl must change stars");
 			if (LevelManager.inst.levelStepsBack == 3 && LevelManager.inst.addStepsBack >= 0)
 			{
 				backStars.sprite = starBackSteps[LevelManager.inst.levelStepsBack];

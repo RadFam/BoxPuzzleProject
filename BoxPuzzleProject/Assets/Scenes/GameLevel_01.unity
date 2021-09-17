@@ -21201,7 +21201,7 @@ MonoBehaviour:
   bonusSteps: 0
   deltaStepsScore: 5
   endLevelEffect: {fileID: 1546845129}
-  addBackStepEffect: {fileID: 0}
+  addBackStepEffect: {fileID: 1546845130}
   myAudioEffects: {fileID: 2081886403}
 --- !u!4 &2081886401
 Transform:

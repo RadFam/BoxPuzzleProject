@@ -114,9 +114,8 @@ namespace GameControls
 
 		public int GetPrefLevelTime()
 		{
-			int currScene = SceneLoaderManager.inst.CurrSceneNum();
-			Debug.Log("Curr scene: " + currScene); // Почему-то на первой игровой сцене возвращается ноль
-			return prefLevelTimes[currScene];
+			int currScene = SceneLoaderManager.inst.NextSceneNum();
+			return prefLevelTimes[currScene-1];
 		}
 
 		public void ExitGame()

@@ -68,13 +68,11 @@ namespace GameControls
             UiCommonControl.inst.OnCloseScene(currScene);
             yield return StartCoroutine(FadeIn());
 
-            Debug.Log("Start to load new Scene");
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(((SceneNames)sceneToLoad).ToString("g"), LoadSceneMode.Single); // Возможно, проблема в асинхронной подгрузке сцены!!
             while (!asyncLoad.isDone)
             {
                 yield return null;
             }
-            Debug.Log("New Scene is Loaded");
             currScene = sceneToLoad;
 
             yield return StartCoroutine(FadeOut());
@@ -121,6 +119,11 @@ namespace GameControls
         public int CurrSceneNum()
         {
             return currScene;
+        }
+
+        public int NextSceneNum()
+        {
+            return sceneToLoad;
         }
     }
 }

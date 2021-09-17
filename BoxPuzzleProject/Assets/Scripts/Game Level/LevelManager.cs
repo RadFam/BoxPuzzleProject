@@ -77,7 +77,6 @@ namespace PlayControls
 			addStepsBack = GameManager.inst.cummSteps;
 			currentTime = 0;
 			fixedTime = 0;
-			Debug.Log("Start of LevelManager");
 			prefferableTime = GameManager.inst.GetPrefLevelTime();
 			deltaTimer = 0.0f;
         }
@@ -171,6 +170,7 @@ namespace PlayControls
 			{
 				addStepsBack -= 1;
 				BoxMoverManager.inst.RestorePrevoiusStep();
+				Debug.Log("LM OnStepBack 1");
 				OnStepsBackChange();
 
 				return;
@@ -179,6 +179,7 @@ namespace PlayControls
 			{
 				levelStepsBack -= 1;
 				BoxMoverManager.inst.RestorePrevoiusStep();
+				Debug.Log("LM OnStepBack 2");
 				OnStepsBackChange();
 				return;
 			}
@@ -186,6 +187,7 @@ namespace PlayControls
 
 		public void IncreaseBackSteps(int inc, bool showEffects=true)
 		{
+			Debug.Log("LM IncreaseBackSteps");
 			addStepsBack += inc;
 
 			// Start Effect
